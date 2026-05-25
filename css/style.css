@@ -1,0 +1,312 @@
+@font-face { font-family: "inter-var"; src: url("../Inter.var.woff2") format("woff2"); }
+@font-face { font-family: "inter-var-italic"; src: url("../Inter-italic.var.woff2") format("woff2"); }
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'inter-var', sans-serif;
+  --border-radius: 16px;
+  --purple: hsl(253, 61%, 27%);
+  --orange: hsl(30, 100%, 28%);
+  --green: hsl(95, 54%, 28%);
+  --red: hsl(359, 54%, 28%);
+
+  color: white;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  min-width: 100svw; width: 100svw; max-width: 100svw;
+  min-height: 100svh; height: 100svh; max-height: 100svh;
+  background-color: var(--purple);
+  overflow: hidden;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-width: 100%; width: 100%; max-width: 100%;
+  min-height: 100svh; height: 100svh; max-height: 100svh;
+  background-image: url('../bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin: 0;
+  scroll-behavior: smooth;
+  padding: 8px 16px;
+  gap: 16px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &.mj-main {
+    --height: calc(100svh - 58px);
+    overflow: hidden;
+    min-height: var(--height); height: var(--height); max-height: var(--height);
+  }
+
+  &.centered {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+button {
+  border: none;
+  padding: 8px 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.main-title {
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+}
+
+#createRoomBtn {
+  background-color: var(--purple);
+  font-weight: 800;
+  font-size: 18px;
+  border-radius: var(--border-radius);
+  border: 2px solid white;
+}
+
+.purple-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--purple);
+  border: 2px solid white;
+  border-radius: var(--border-radius);
+}
+
+.player-join-room-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+
+  #playerNameInput {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+    padding: 16px;
+    border: none;
+    font-size: 18px;
+  }
+
+  #joinRoomBtn {
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    border: 2px solid white;
+    border-radius: var(--border-radius);
+    background-color: var(--purple);
+    white-space: nowrap;
+    width: 100%;
+  }
+}
+
+.player-answers-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+
+  .player-answer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%; width: 100%; max-width: 100%;
+    padding: 16px;
+    background-color: var(--purple);
+    font-size: 18px;
+    font-weight: 600;
+    border: 2px solid white;
+    border-radius: var(--border-radius);
+  
+    &.selected  { background-color: var(--orange); }
+    &.correct   { background-color: var(--green); }
+    &.incorrect { background-color: var(--red); }
+  }
+}
+
+.mj-players-top-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  gap: 8px;
+}
+
+.mj-players-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: rgba(255, 255, 255, 0.24);
+  border-radius: var(--border-radius);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.player-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  padding: 8px 16px;
+  font-weight: 800;
+  border: 2px solid white;
+  border-radius: var(--border-radius);
+  background-color: var(--purple);
+
+  &.has-answered { background-color: var(--orange); }
+  &.selected     { background-color: var(--orange); }
+  &.correct      { background-color: var(--green); }
+  &.incorrect    { background-color: var(--red); }
+
+  &.gold   { background-color: hsl(40, 100%, 35%);}
+  &.silver { background-color: hsl(0, 0%, 45%);}
+  &.bronze { background-color: hsl(25, 60%, 40%);}
+}
+
+.mj-phase-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 58px;
+  padding: 8px 16px;
+  background-color: var(--purple);
+  border-top: 2px solid white;
+  
+  &.hidden {display: none;}
+
+  #endGameBtn {
+    background-color: var(--red);
+    font-weight: 800;
+    font-size: 18px;
+    border-radius: var(--border-radius);
+
+    &.hidden {display: none;}
+  }
+
+  #phaseText {
+    &.active {
+      padding: 8px 16px;
+      color: black;
+      background-color: yellowgreen;
+      border-radius: var(--border-radius);
+    }
+  }
+
+  #nextPhaseBtn {
+    background-color: var(--green);
+    font-weight: 800;
+    font-size: 18px;
+    border-radius: var(--border-radius);
+  }
+}
+
+/* Tablets ----------- */
+@media (min-width : 767px) and (max-width : 1279px) {
+  main {
+    /* background: magenta !important; */
+    padding: 16px 3svw;
+  }
+}
+
+/* Laptops & up ----------- */
+@media (min-width: 1280px) {
+  main {
+    padding: 16px 6svw;
+
+    &.mj-main {
+      padding: 16px 25svw;
+    }
+  }
+
+  .player-join-room-block {
+    flex-direction: row;
+
+    #joinRoomBtn {
+      width: fit-content;
+    }
+  }
+
+  .player-answers-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+
+    .player-answer {
+      --width: calc(calc(100% - calc(2 * 16px)) / 3);
+      min-width: var(--width); width: var(--width); max-width: var(--width);
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+}
