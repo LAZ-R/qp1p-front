@@ -2,13 +2,13 @@
 import { io } from 'https://cdn.socket.io/4.8.1/socket.io.esm.min.js';
 import { requestWakeLock } from './wakelock.js';
 import { APP_VERSION } from '../properties.js';
+import { BACKEND_URL } from '../config.js';
 
-console.log(APP_VERSION);
-
+console.log(`Questions pour un poisson | v ${APP_VERSION}`);
 requestWakeLock();
 
 // Back-end
-const socket = io('http://192.168.1.82:3000');
+const socket = io(BACKEND_URL);
 
 // MJ
 let isMJ = window.location.hash == '#mj';
