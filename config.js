@@ -2,4 +2,4 @@
 //export const BACKEND_URL = 'http://192.168.1.82:3000';
 
 // Uncomment for PROD, comment for DEV
-export const BACKEND_URL = 'http://95.179.217.230:3000/';
+export const BACKEND_URL = 'https://api.questions-pour-un-poisson.fr/';
