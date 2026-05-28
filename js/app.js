@@ -151,7 +151,8 @@ function escapeHTML(str) {
     .replaceAll("'", '&#039;');
 }
 
-function getPlayersListDomString(game, showScore = false, isScoreBoard = false) {
+function getPlayersListDomString(game, showScore = false, isScoreBoard = false, showAnswer = false) {
+  const currentQuestion = game.questions[game.currentQuestionIndex];
   let playersDOMString = '';
   const sortedPlayers = [...game.players].sort((a, b) => b.score - a.score);
   for (const player of sortedPlayers) {
@@ -159,10 +160,14 @@ function getPlayersListDomString(game, showScore = false, isScoreBoard = false) 
     let isGold = index == 0 && player.score != 0;
     let isSilver = index == 1 && player.score != 0;
     let isBronze = index == 2 && player.score != 0;
+    const noAnswer = player.selectedAnswerId == null;
     playersDOMString += `
       <div class="player-card ${isScoreBoard ? `${isGold ? 'gold ' : isSilver ? 'silver ' : isBronze ? 'bronze ' : ''}` : ''} ">
-        <span class="player-name">${isScoreBoard ? `${isGold ? '🥇 ' : isSilver ? '🥈 ' : isBronze ? '🥉 ' : ''}` : ''}${escapeHTML(player.name)}</span>
-        ${showScore ? `<span class="mj-player-score">${player.score} pts</span>` : ''}
+        ${isScoreBoard ? `<span>${isGold ? '🥇 ' : isSilver ? '🥈 ' : isBronze ? '🥉 ' : ''}` : ''}</span>
+        <span class="player-name">${escapeHTML(player.name)}</span>
+        ${showAnswer && !noAnswer ? `<span class="ellipsis-answer">${currentQuestion.answers[player.selectedAnswerId - 1].text}</span>` : ''}   
+        ${isScoreBoard ? player.selectedAnswerId == currentQuestion.correctAnswerId ? `<span class="answer-veracity-badge">+ 1</span>` : '' : ''}
+        ${showScore ? `<span class="player-score">${player.score} pts</span>` : ''}
       </div>
     `;
   };
@@ -191,7 +196,7 @@ function renderPlayer(game) {
         MAIN.innerHTML = `
           <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
           <span class="main-title">Salon ${game.code}</span>
-          <div class="purple-container">Veuillez patienter</div>
+          <div class="purple-container"><span>Veuillez patienter</span></div>
           <hr style="width: 100%;">
           <div id="playersList" class="players-list"></div>
         `;
@@ -217,7 +222,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">Préparez-vous !</div>
+      <div class="purple-container"><span>Préparez-vous !</span></div>
     `;
     return;
   }
@@ -229,7 +234,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       <hr style="width: 100%;">
       <div id="answersList" class="player-answers-list">${getAnswersDom(game)}</div>
     `;
@@ -243,7 +248,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       <hr style="width: 100%;">
       <div id="answersList" class="player-answers-list">${getAnswersDom(game)}</div>
     `;
@@ -257,7 +262,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       <hr style="width: 100%;">
       <div id="answersList" class="player-answers-list">${getAnswersDom(game)}</div>
     `;
@@ -271,7 +276,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       <hr style="width: 100%;">
       <div id="answersList" class="player-answers-list">${getAnswersDom(game)}</div>
     `;
@@ -285,7 +290,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">Scores</div>
+      <div class="purple-container"><span>Scores</span></div>
       <hr style="width: 100%;">
       <div id="playersList" class="players-list">${getPlayersListDomString(game, true, true)}</div>
     `;
@@ -298,7 +303,7 @@ function renderPlayer(game) {
     MAIN.innerHTML = `
       <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Fin de la partie</span>
-      <div class="purple-container">Classement final</div>
+      <div class="purple-container"><span>Classement final</span></div>
       <hr style="width: 100%;">
       <div id="playersList" class="players-list">${getPlayersListDomString(game, true, true)}</div>
     `;
@@ -353,7 +358,7 @@ function renderMJ(game) {
   if (PHASE == 'QUESTION_INTRO') {
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">Préparez-vous !</div>
+      <div class="purple-container"><span>Préparez-vous !</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
@@ -380,6 +385,7 @@ function renderMJ(game) {
       playersListDomString += `
         <div class="player-card ${hasAnswered ? 'has-answered' : ''}">
           <span class="player-name">${escapeHTML(player.name)}</span>
+          ${hasAnswered ? `<span class="ellipsis-answer">${currentQuestion.answers[player.selectedAnswerId - 1].text}</span>` : ''}         
           <span class="player-score">${player.score} pts</span>
         </div>
       `;
@@ -387,7 +393,7 @@ function renderMJ(game) {
 
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
@@ -407,13 +413,13 @@ function renderMJ(game) {
 
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
         <span id="playersCountDisplay">${game.players.length}</span>
       </div>
-      <div id="playersList" class="mj-players-list">${getPlayersListDomString(game, true)}</div>
+      <div id="playersList" class="mj-players-list">${getPlayersListDomString(game, true, false, true)}</div>
 
       <div id="mjPhaseArea" class="mj-phase-area">${getMjPhaseDomString(PHASE)}</div>
     `;
@@ -430,10 +436,12 @@ function renderMJ(game) {
     const sortedPlayers = [...game.players].sort((a, b) => b.score - a.score);
     for (let player of sortedPlayers) {
       const goodAnswer = player.selectedAnswerId == currentQuestion.correctAnswerId;
+      const noAnswer = player.selectedAnswerId == null;
       if (goodAnswer) correctAnswers ++;
       playersListDomString += `
         <div class="player-card ${goodAnswer ? 'correct' : 'incorrect'}">
           <span class="player-name">${escapeHTML(player.name)}</span>
+          ${!noAnswer ? `<span class="ellipsis-answer">${currentQuestion.answers[player.selectedAnswerId - 1].text}</span>` : ''}
           <span class="player-score">${player.score} pts</span>
         </div>
       `;
@@ -441,7 +449,7 @@ function renderMJ(game) {
 
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
@@ -464,10 +472,12 @@ function renderMJ(game) {
     const sortedPlayers = [...game.players].sort((a, b) => b.score - a.score);
     for (let player of sortedPlayers) {
       const goodAnswer = player.selectedAnswerId == currentQuestion.correctAnswerId;
+      const noAnswer = player.selectedAnswerId == null;
       if (goodAnswer) correctAnswers ++;
       playersListDomString += `
         <div class="player-card ${goodAnswer ? 'correct' : 'incorrect'}">
           <span class="player-name">${escapeHTML(player.name)}</span>
+          ${!noAnswer ? `<span class="ellipsis-answer">${currentQuestion.answers[player.selectedAnswerId - 1].text}</span>` : ''}
           <span class="player-score">${player.score} pts</span>
         </div>
       `;
@@ -475,7 +485,7 @@ function renderMJ(game) {
 
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">${currentQuestion.title}</div>
+      <div class="purple-container"><span>${currentQuestion.title}</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
@@ -495,7 +505,7 @@ function renderMJ(game) {
 
     MAIN.innerHTML = `
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
-      <div class="purple-container">Scores</div>
+      <div class="purple-container"><span>Scores</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>
@@ -513,7 +523,7 @@ function renderMJ(game) {
   if (PHASE == 'END') {
     MAIN.innerHTML = `
       <span class="main-title">Fin de la partie</span>
-      <div class="purple-container">Classement final</div>
+      <div class="purple-container"><span>Classement final</span></div>
       
       <div class="mj-players-top-area">
         <span>Players</span>

@@ -1,3 +1,6 @@
+# v 0.0.6
+- Rework UI score board + fix span dans purple container pour les <i></i> + ajout player answers pour mj
+
 # v 0.0.5
 - Ajout logo
 

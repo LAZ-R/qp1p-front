@@ -229,10 +229,10 @@ button {
 }
 .player-card {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
-  gap: 16px;
+  gap: 8px;
   padding: 8px 16px;
   font-weight: 800;
   border: 2px solid white;
@@ -247,6 +247,40 @@ button {
   &.gold   { background-color: hsl(40, 100%, 35%);}
   &.silver { background-color: hsl(0, 0%, 45%);}
   &.bronze { background-color: hsl(25, 60%, 40%);}
+
+  .player-name {
+    margin-right: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ellipsis-answer {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+    max-height: 20px;
+    padding: 0 8px;
+    border: 2px solid white;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .answer-veracity-badge {
+    min-width: fit-content;
+    max-height: 20px;
+    border-radius: var(--border-radius);
+    background-color: var(--green);
+    border: 2px solid white;
+    font-size: 14px;
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+
+  .player-score {
+    white-space: nowrap;
+  }
 }
 
 .mj-phase-area {
@@ -303,13 +337,26 @@ button {
   main {
     padding: 16px 6svw;
 
+    /* &:not(.mj-main) {
+      justify-content: center;
+    } */
+
     &.mj-main {
       padding: 16px 25svw;
     }
   }
 
+  .player-header {
+    height: 64px;
+  }
+
   .player-join-room-block {
     flex-direction: row;
+    justify-content: center;
+
+    #playerNameInput {
+      width: 50svw;
+    }
 
     #joinRoomBtn {
       width: fit-content;
