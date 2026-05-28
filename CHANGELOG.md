@@ -1,3 +1,6 @@
+# v 0.0.5
+- Ajout logo
+
 # v 0.0.4
 - Ajout adresse back déployé avec custom domain dans config.js + ajout CNAME
 

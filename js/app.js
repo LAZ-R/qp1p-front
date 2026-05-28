@@ -180,12 +180,16 @@ function renderPlayer(game) {
     if (hasNoRoom) {
       localStorage.removeItem('playerId');
       MAIN.classList.add('centered');
-      MAIN.innerHTML = `<span class="main-title">Aucun salon disponible<br>Veuillez patienter</span>`;
+      MAIN.innerHTML = `
+      <img class="no-room-logo" src="/assets/QP1P-logo.png" />
+      <span class="main-title">Aucun salon disponible<br>Veuillez patienter</span>
+      `;
     } else {
       const hasAlreadyJoined = getCurrentPlayer(game) != null;
       if (hasAlreadyJoined) {
         MAIN.classList.remove('centered');
         MAIN.innerHTML = `
+          <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
           <span class="main-title">Salon ${game.code}</span>
           <div class="purple-container">Veuillez patienter</div>
           <hr style="width: 100%;">
@@ -196,6 +200,7 @@ function renderPlayer(game) {
       } else {
         MAIN.classList.add('centered');
         MAIN.innerHTML = `
+          <img class="no-room-logo" src="/assets/QP1P-logo.png" />
           <div id="joinRoomBlock" class="player-join-room-block">
             <input id="playerNameInput" placeholder="Pseudo">
             <button id="joinRoomBtn" onclick="onJoinRoomClick()">Rejoindre salon</button>
@@ -210,6 +215,7 @@ function renderPlayer(game) {
 
   if (PHASE == 'QUESTION_INTRO') {
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">Préparez-vous !</div>
     `;
@@ -221,6 +227,7 @@ function renderPlayer(game) {
   if (PHASE == 'QUESTION_ACTIVE') {
     const currentQuestion = game.questions[game.currentQuestionIndex];
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">${currentQuestion.title}</div>
       <hr style="width: 100%;">
@@ -234,6 +241,7 @@ function renderPlayer(game) {
   if (PHASE == 'LOCK_ANSWERS') {
     const currentQuestion = game.questions[game.currentQuestionIndex];
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">${currentQuestion.title}</div>
       <hr style="width: 100%;">
@@ -247,6 +255,7 @@ function renderPlayer(game) {
   if (PHASE == 'REVEAL') {
     const currentQuestion = game.questions[game.currentQuestionIndex];
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">${currentQuestion.title}</div>
       <hr style="width: 100%;">
@@ -260,6 +269,7 @@ function renderPlayer(game) {
   if (PHASE == 'QUESTION_OUTRO') {
     const currentQuestion = game.questions[game.currentQuestionIndex];
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">${currentQuestion.title}</div>
       <hr style="width: 100%;">
@@ -273,6 +283,7 @@ function renderPlayer(game) {
   if (PHASE == 'SCORE_BOARD') {
     const currentQuestion = game.questions[game.currentQuestionIndex];
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Question ${game.currentQuestionIndex + 1}</span>
       <div class="purple-container">Scores</div>
       <hr style="width: 100%;">
@@ -285,6 +296,7 @@ function renderPlayer(game) {
 
   if (PHASE == 'END') {
     MAIN.innerHTML = `
+      <div class="player-header"><img class="header-logo" src="/assets/QP1P-logo.png" /></div>
       <span class="main-title">Fin de la partie</span>
       <div class="purple-container">Classement final</div>
       <hr style="width: 100%;">
@@ -296,9 +308,9 @@ function renderPlayer(game) {
 
 function getMjPhaseDomString(phase) {
   return `
-    <button id="endGameBtn" onclick="onEndGameClick()">Tuer salon</button>
+    <button id="endGameBtn" onclick="onEndGameClick()">KILL</button>
     <span id="phaseText" ${phase == 'QUESTION_ACTIVE' ? ' class="active"' : ''}>${phase}</span>
-    <button id="nextPhaseBtn" onclick="onNextPhaseClick()">Phase suivante</button>
+    <button id="nextPhaseBtn" onclick="onNextPhaseClick()">NEXT</button>
   `;
 }
 
@@ -313,6 +325,7 @@ function renderMJ(game) {
     if (hasNoRoom) {
       MAIN.classList.add('centered');
       MAIN.innerHTML = `
+        <img class="no-room-logo" src="/assets/QP1P-logo.png" />
         <span class="main-title">Aucun salon</span>
         <button id="createRoomBtn" onclick="onCreateRoomClick()">Créer un salon</button>
       `;
